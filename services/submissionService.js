@@ -106,6 +106,7 @@ export async function runSubmission(input, { remoteIp } = {}) {
   const problems = checkConstraints(input);
   if (problems.length > 0) return { ok: false, reason: 'constraints' };
 
+  const studentID = normalize(input.studentID);
   const existing = await StudentInfo.findOne({ studentID: studentID });
   if (existing) return { ok: false, reason: 'Duplicate ID already exist.' };
 
