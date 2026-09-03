@@ -106,12 +106,12 @@ export async function runSubmission(input, { remoteIp } = {}) {
   const problems = checkConstraints(input);
   if (problems.length > 0) return { ok: false, reason: 'constraints' };
 
-  const existing = await StudentInfo.findOne({ studentID: canonId });
-  if (existing) return { ok: false, reason: 'duplicate' };
+  const existing = await StudentInfo.findOne({ studentID: studentID });
+  if (existing) return { ok: false, reason: 'Duplicate ID already exist.' };
 
   await StudentInfo.create({
     name: normalize(input.name),
-    studentID: canonId,
+    studentID: studentID,
     major: normalize(input.major),
     cohort: normalize(input.cohort),
     comments: normalize(input.comments),
