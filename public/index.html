@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CityU Student Petition — sign your support before the deadline." />
+
+  <title>CityU Student Petition</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4/dist/signature_pad.umd.min.js"></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script>
+    window.__APP_CONFIG__;
+  </script>
+
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+
+
+<body class="min-h-screen bg-slate-100 text-slate-800 antialiased">
+  <main id="appRoot" class="w-full max-w-2xl mx-auto px-4 sm:px-6 py-8">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl sm:text-4xl font-bold text-blue-800 tracking-tight">
+        Support the BSc Creative Media Reclassification Petition
+      </h1>
+      <p class="mt-3 text-slate-600 leading-relaxed">
+        This petition aims to bring attention into addressing the imbalance of courses for
+        students pursuing a degree in BSc Creative Media [Animation], where 4 out of 13 courses
+        are the only applicable electives to fulfill the major elective requirements, forcing
+        BSc Creative Media [Animation] students towards Game or Installation courses with low
+        Animation Final Year Project selection.
+      </p>
+      <a href="https://docs.google.com/document/d/1zwQzy7vgyJcRGU7BJpqagKqlJyXvlx4T/edit?usp=drivesdk&ouid=108193834069269103858&rtpof=true&sd=true">
+        Learn more about the petition (Google Docs)
+      </a>
+    </header>
+
+    <section class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+      <div class="rounded-xl bg-white shadow p-4 text-center border border-slate-200">
+        <p class="text-xs uppercase tracking-widest text-slate-400 font-semibold">Deadline</p>
+        <div id="countdown" class="mt-2 font-mono text-2xl font-bold text-slate-800">
+          --d --h --m --s
+        </div>
+        <p class="mt-1 text-[11px] text-slate-400" id="countdownDeadline"></p>
+      </div>
+
+      <div class="rounded-xl bg-white shadow p-4 text-center border border-slate-200">
+        <p class="text-xs uppercase tracking-widest text-slate-400 font-semibold">
+          Signatures
+        </p>
+        <p class="mt-2 font-mono text-2xl font-bold text-emerald-600">
+          <span id="studentCount">…</span>
+        </p>
+        <p class="mt-1 text-[11px] text-slate-400">students have signed for this petition.</p>
+      </div>
+    </section>
+
+    <div id="formCard"
+         class="rounded-2xl bg-white shadow border border-slate-200 p-6 sm:p-8">
+
+      <h2 class="text-2xl font-semibold text-slate-800 mb-6">Sign the petition</h2>
+
+      <form id="petitionForm" novalidate>
+
+        <div class="mb-4">
+          <label for="name" class="block text-sm font-medium text-slate-600 mb-1">
+            Full Name <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="name" name="name" maxlength="60" required
+                 class="w-full input-field"
+                 placeholder="E.g.: Chris Wong" />
+          <p class="mt-1 text-xs text-slate-400 text-right"><span id="nameCount">0</span>/60</p>
+        </div>
+
+        <div class="mb-4">
+          <label for="studentID" class="block text-sm font-medium text-slate-600 mb-1">
+            Student ID <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="studentID" name="studentID" maxlength="8" required
+                 class="w-full input-field"
+                 placeholder="E.g.: 12345678" />
+          <p class="mt-1 text-xs text-slate-400" id="sidHint">8 alphanumeric characters.</p>
+        </div>
+
+        <!-- Major -->
+        <div class="mb-4">
+          <label for="major" class="block text-sm font-medium text-slate-600 mb-1">
+            Major <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="major" name="major" maxlength="60" required
+                 class="w-full input-field"
+                 placeholder="E.g.: BSc in Creative Media" />
+          <p class="mt-1 text-xs text-slate-400 text-right"><span id="majorCount">0</span>/60</p>
+        </div>
+
+        <!-- Cohort -->
+        <div class="mb-4">
+          <label for="cohort" class="block text-sm font-medium text-slate-600 mb-1">
+            Cohort (graduation year) <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="cohort" name="cohort" maxlength="4" required
+                 class="w-full input-field"
+                 placeholder="E.g.: 2026" inputmode="numeric" pattern="[0-9]*" />
+        </div>
+
+        <div class="mb-5">
+          <label for="comments" class="block text-sm font-medium text-slate-600 mb-1">
+            Comments <span class="text-slate-400">(optional)</span>
+          </label>
+          <textarea id="comments" name="comments" maxlength="200" rows="3"
+                    class="w-full input-field resize-none"
+                    placeholder="Tell us why this matters to you…"></textarea>
+          <p class="mt-1 text-xs text-slate-400 text-right"><span id="commentsCount">0</span>/200</p>
+        </div>
+
+        <div class="mb-5">
+          <div class="flex items-center justify-between mb-1">
+            <label for="signaturePad" class="block text-sm font-medium text-slate-600">
+              Signature <span class="text-red-500">*</span>
+            </label>
+            <button type="button" id="clearSignature"
+                    class="text-xs font-semibold text-blue-600 hover:text-blue-800 disabled:text-slate-300">
+              Clear
+            </button>
+          </div>
+          <div class="rounded-lg border-2 border-dashed border-slate-300 bg-white overflow-hidden signature-wrap">
+            <canvas id="signaturePad" class="w-full" height="160"
+                    aria-label="Signature drawing area"></canvas>
+          </div>
+          <p class="mt-1 text-xs text-slate-400">Sign inside the box with your mouse or finger.</p>
+          <input type="hidden" id="signatureData" name="signatureData" />
+        </div>
+
+        <div class="my-5 flex justify-center" id="turnstileWidget"></div>
+
+        <button type="submit" id="submitBtn"
+                class="w-full rounded-lg bg-blue-700 hover:bg-blue-800 disabled:bg-slate-400 disabled:cursor-not-allowed text-white font-semibold py-3 transition-colors cursor-pointer">
+          Submit Signature
+        </button>
+      </form>
+
+      <div id="errorBanner"
+           class="hidden mt-5 px-4 py-3 rounded-md border-2 border-red-300 bg-red-50 text-red-700 text-sm font-medium"
+           role="alert">
+        Something went wrong with form submission :(
+      </div>
+
+      <p id="formLockedNote" class="hidden mt-4 text-center text-sm text-red-600 font-medium">
+        The submission window has closed. Thank you for your support.
+      </p>
+    </div>
+
+
+
+    <section id="successView"
+             class="hidden rounded-2xl bg-white shadow border border-slate-200 p-10 text-center">
+      <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
+        <svg class="h-9 w-9 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <h2 class="text-3xl font-bold text-emerald-700">Thank you!</h2>
+      <p class="mt-3 text-slate-600">
+        Your signature has been recorded. Share this petition with your peers:
+      </p>
+      <div class="mt-4 inline-flex items-center gap-2 rounded-lg bg-slate-100 px-4 py-2 text-slate-700 text-sm">
+        <span id="shareableLink" class="font-mono"></span>
+      </div>
+      <div class="mt-5">
+        <a href="/" class="text-blue-600 hover:text-blue-800 font-medium text-sm">Back to home page</a>
+      </div>
+    </section>
+
+    <footer class="mt-10 text-center text-xs text-slate-400">
+      CityU Student Petition &middot; 2026
+    </footer>
+  </main>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
