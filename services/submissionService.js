@@ -16,7 +16,7 @@ function normalize(raw) {
 
 
 async function verifyTurnstile(token, remoteIp) {
-  const siteSecret = process.env.TURNSTILE_SECRET;
+  const siteSecret = process.env.TURNSTILE_SECRET || process.env.TURNSTILE_SECRETKEY;
   const verifyUrl =
     process.env.TURNSTILE_VERIFY_URL ||
     'https://challenges.cloudflare.com/turnstile/v0/siteverify';
