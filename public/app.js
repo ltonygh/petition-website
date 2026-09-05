@@ -97,8 +97,10 @@
     if (!v.cohort) problems.push('Cohort is required');
     if (v.cohort && !YEAR_PATTERN.test(v.cohort))
       problems.push('Cohort must be a valid year');
+    if (v.cohort && (Number(v.cohort) < 2016 || Number(v.cohort) > 2036))
+      problems.push('Cohort is out of range');
 
-    if (v.comments && v.comments.length > 200)
+    if (v.comments && v.comments.length > 500)
       problems.push('Comments exceed 200 characters');
 
     const sigEmpty = !signaturePad || signaturePad.isEmpty();
@@ -258,7 +260,7 @@
   function resetTurnstile() {
     try {
       if (window.turnstile) window.turnstile.reset();
-    } catch (e) { /* noop */ }
+    } catch (e) { }
     window.__turnstileToken__ = '';
   }
 

@@ -76,13 +76,13 @@ function checkConstraints(raw) {
     errors.push('cohort');
   } else {
     const cohortYear = parseInt(cohort, 10);
-    if (cohortYear < 2026 || cohortYear > 2036) {
+    if (cohortYear < 2016 || cohortYear > 2036) {
       errors.push('cohort');
     }
   }
 
   const comments = normalize(raw.comments);
-  if (comments && comments.length > 200) errors.push('comments');
+  if (comments && comments.length > 500) errors.push('comments');
 
 
   const signature = normalize(raw.signature ?? raw.signatureData);

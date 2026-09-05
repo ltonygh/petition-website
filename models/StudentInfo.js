@@ -36,7 +36,7 @@ const studentInfoSchema = new mongoose.Schema(
       validate: {
       validator: function(value) {
         const year = parseInt(value, 10);
-        return year >= 2026 && year <= 2036;
+        return year >= 2016 && year <= 2036;
       },
       message: props => `${props.value} is not a valid cohort year! Year must be between 2026 and 2036.`
   }
@@ -45,7 +45,7 @@ const studentInfoSchema = new mongoose.Schema(
       type: String,
       default: '',
       trim: true,
-      maxlength: 200
+      maxlength: 500
     },
     signature: {
       type: String,
